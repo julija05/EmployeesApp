@@ -1,28 +1,37 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import SecondaryButton from './SecondaryButton';
 import DangerButton from './DangerButton';
 import InputLabel from './InputLabel';
 import { fetchShifts } from '@/Api/fetchShifts';
-import { useForm } from '@inertiajs/react';
+import Pagination from './Pagination';
+
 
 const ShiftsTable = ({ shifts }) => {
-
-  const { data, setData, post, delete: destroy, processing, errors, reset } = useForm({
-    total_pay: '',
-  });
+  const inputRef = useRef()
 
   const [state, setState] = useState({
-    shifts: shifts,
+    total_pay: 0,
+    shifts: shifts.data,
+    total_pages: shifts.last_page,
+    currentPage: shifts.current_page,
   });
 
-
-  function handleFilterShifts(e) {
-    e.preventDefault();
-    fetchShifts('/api/shiftsByTotalPay', data.total_pay).then(dt => {
-      console.log(dt, 'data')
+  const handleFilterShifts = (e) => {
+    fetchShifts('/api/shiftsByTotalPay', inputRef.current.value).then(dt => {
       setState({
         ...state,
-        shifts: dt,
+        shifts: dt.data,
+      })
+    })
+  }
+
+  const setPage = (page)=> {
+    fetchShifts('/api/shiftsByTotalPay', inputRef.current.value, page).then(dt => {
+      console.log(dt, 'pagedata')
+      setState({
+        ...state,
+        currentPage:page,
+        shifts: dt.data,
       })
     })
   }
@@ -49,16 +58,14 @@ const ShiftsTable = ({ shifts }) => {
   };
   return (
     <div className="relative shadow-md sm:rounded-lg">
-      <form onSubmit={handleFilterShifts}>
-        <InputLabel>Filter By Total Pay</InputLabel>
-        <input
-          name='total_pay'
-          type='number'
-          min="0"
-          onChange={(e) => setData('total_pay', e.target.value)}
-          value={data.total_pay} />
-        <DangerButton className='ml-2'>Filter</DangerButton>
-      </form>
+     <InputLabel>Filter By Total Pay</InputLabel> 
+      <input
+        name='total_pay'
+        type='number'
+        min="0"
+        ref={inputRef}
+      />
+      <DangerButton className='ml-2' onClick={(e) => handleFilterShifts(e)}>Filter</DangerButton>
       <div className='overflow-y-scroll max-h-96 w-full'>
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -108,16 +115,16 @@ const ShiftsTable = ({ shifts }) => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  {item.company.name}
+                  {item.company_name}
                 </th>
-                <td className="px-6 py-4">{item.employee.worker}</td>
+                <td className="px-6 py-4">{item.worker}</td>
                 <td className="px-6 py-4">{item.date}</td>
                 <td className="px-6 py-4">{item.hours}</td>
                 <td className="px-6 py-4">{item.rate_per_hour}</td>
                 <td className="px-6 py-4">{item.shift_type}</td>
                 <td className="px-6 py-4">{item.status}</td>
                 <td className="px-6 py-4">{item.paid_at}</td>
-                <td className="px-6 py-4">{item.total_pay}</td>
+                <td className="px-6 py-4">{item.rate_per_hour * item.hours}</td>
                 <td className="px-6 py-4">
                   <a href={route('shifts.edit', [item.id])}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
@@ -138,6 +145,11 @@ const ShiftsTable = ({ shifts }) => {
           </tbody>
         </table>
       </div>
+      <Pagination 
+        totalPages={state.total_pages}
+        currentPage={state.currentPage}
+        setPage={(p)=>setPage(p)}
+      />
     </div>
   );
 };

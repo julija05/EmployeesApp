@@ -6,13 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateShiftRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,7 +15,14 @@ class UpdateShiftRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'date'=> 'date',
+            'employee_id'=> 'integer',
+            'company_id'=> 'integer',
+            'hours'=> 'integer',
+            'rate_per_hour'=> 'numeric',
+            'status'=> 'string',
+            'shift_type'=> 'string',
+            'paid_at'=> 'nullable|date',
         ];
     }
 }

@@ -18,9 +18,6 @@ const TableComponent = ({ data }) => {
             <th scope="col" className="px-6 py-3">
               Status
             </th>
-            <th scope="col" className="px-6 py-3">
-              <span className="sr-only">Edit</span>
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -38,14 +35,6 @@ const TableComponent = ({ data }) => {
               <td className="px-6 py-4">{item.shift_type}</td>
               <td className="px-6 py-4">{item.paid_at}</td>
               <td className="px-6 py-4">{item.status}</td>
-              <td className="px-6 py-4 text-right">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                >
-                  Edit
-                </a>
-              </td>
             </tr>
           ))}
         </tbody>

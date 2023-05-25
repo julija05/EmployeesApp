@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,21 +8,32 @@ use App\Models\Shift;
 use App\Models\Employee;
 use App\Models\Company;
 use App\Events\CachedDataChanged;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\UploadFileRequest;
 
 class UploadFileController extends Controller
 {
-    public function upload(Request $request)
+    public function index()
+    {
+        return $this->createView('Welcome');
+    }
+
+    public function upload(UploadFileRequest $request)
     {
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             // Perform any necessary validations on the file (e.g., file type, size, etc.)
-
             $csvData = array_map('str_getcsv', file($file));
             $headers = array_shift($csvData);
-
+            $requiredColumns = ['Company', 'Worker', 'Date', 'Hours', 'Rate per Hour', 'Status', 'Shift Type'];
             foreach ($csvData as $row) {
+
                 $rowData = array_combine($headers, $row);
-                $taxable = $rowData['Taxable'] === 'yes' ? true : false;
+                $missingColumns = array_diff($requiredColumns, array_keys($rowData));
+                if($missingColumns){
+                    return ;
+                }
+                $taxable = $rowData['Taxable'] == 'Yes' ? true : false;
                 $ratePerHour = floatval(str_replace('£', '', $rowData['Rate per Hour']));
                 $paidAt = !empty($rowData['Paid At']) ? $rowData['Paid At'] : null;
 
@@ -59,9 +70,9 @@ class UploadFileController extends Controller
             }
             event(new CachedDataChanged());
 
-            return response()->json(['message' => 'File uploaded successfully']);
+            return Redirect::route('employees.index');
         }
 
-        return response()->json(['message' => 'No file uploaded'], 400);
+        return redirect()->back();
     }
 }

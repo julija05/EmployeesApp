@@ -20,7 +20,6 @@ class StoreShiftRequest extends FormRequest
             'company_id'=> 'required|integer',
             'hours'=> 'required|integer',
             'rate_per_hour'=> 'required|numeric',
-            'taxable'=> 'required|boolean',
             'status'=> 'required|string',
             'shift_type'=> 'required|string',
             'paid_at'=> 'nullable|date',

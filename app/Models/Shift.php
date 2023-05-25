@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Relations\BelongsToEmployee;
 use App\Traits\Relations\BelongsToCompany;
+use App\Traits\ScopeFilters\ScopeFilterShiftByTotalPay;
 
 class Shift extends Model
 {
     use HasFactory;
     use BelongsToEmployee;
     use BelongsToCompany;
+    use ScopeFilterShiftByTotalPay;
 
     protected $fillable = [
         'date', 

@@ -25,7 +25,7 @@ class ShiftController extends Controller
      */
     public function create()
     {
-        return $this->createView('Shifts/CreateShift');
+        return $this->createView('Shifts/CreateShift',['title'=>'Create']);
     }
 
     /**
@@ -34,7 +34,7 @@ class ShiftController extends Controller
     public function store(StoreShiftRequest $request)
     {
         Shift::create($request->validated());
-        
+
         event(new CachedDataChanged());
 
         return Redirect::route('shifts.index');
@@ -54,7 +54,8 @@ class ShiftController extends Controller
     public function edit(Shift $shift)
     {
         return $this->createView('Shifts/CreateShift',[
-            'shift' => $shift
+            'shift' => $shift,
+            'title'=> 'Edit',
         ]);
     }
 
