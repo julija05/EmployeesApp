@@ -38,21 +38,9 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        $averagePayPerHour = Employee::findOrFail($employee->id)
-        ->shifts()
-        ->average('rate_per_hour');
-
-        $lastFiveCompletedPayments = Employee::findOrFail($employee->id)
-        ->shifts()
-        ->with('company') 
-        ->where('status', 'Complete')
-        ->orderBy('paid_at', 'desc')
-        ->take(5)
-        ->get();
-        $averageTotalPay = Employee::findOrFail($employee->id)
-        ->shifts()
-        ->where('status', 'Complete')
-        ->avg(DB::raw('rate_per_hour * hours'));
+        $averagePayPerHour = $employee->getAveragePayPerHour($employee->id);
+        $lastFiveCompletedPayments = $employee->getLastFiveCompletedPayments($employee->id);
+        $averageTotalPay = $employee->getAverageTotalPay($employee->id);
         
         return $this->createView('Employee/EmployeeSummary',[
             'employee'=>$employee,

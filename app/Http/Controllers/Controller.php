@@ -60,14 +60,10 @@ class Controller extends BaseController
 
     private function setUpAllShifts(): void
     {
-        $shifts =  $filteredShifts = Shift::query()
+        $shifts = Shift::query()
         ->filterShiftByTotalPay(0)
         ->paginate(10);
 
-        foreach ($shifts as $shift) {
-            $totalPay = $shift->rate_per_hour * $shift->hours;
-            $shift->total_pay = $totalPay;
-        }
         $this->templateValues['shifts'] =  $shifts;
     }
 

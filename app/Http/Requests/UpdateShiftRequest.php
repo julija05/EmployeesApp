@@ -22,7 +22,16 @@ class UpdateShiftRequest extends FormRequest
             'rate_per_hour'=> 'numeric',
             'status'=> 'string',
             'shift_type'=> 'string',
-            'paid_at'=> 'nullable|date',
+            'paid_at'=> $this->getPaidAtRule(),
         ];
+    }
+
+    protected function getPaidAtRule()
+    {
+        if ($this->input('status') === 'Complete') {
+            return 'required';
+        }
+
+        return 'nullable';
     }
 }
