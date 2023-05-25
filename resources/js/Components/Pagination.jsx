@@ -8,7 +8,7 @@ function Pagination(props) {
   };
 
   const renderPageNumbers = () => {
-    const pageNumbers = [ <span onClick={()=> handlePageChange(1)} className="  cursor-pointer px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+    const pageNumbers = [ <span key="first" onClick={()=> handlePageChange(1)} className="  cursor-pointer px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
     1
   </span>];
 
@@ -38,7 +38,7 @@ function Pagination(props) {
     }
 
     if (props.currentPage + 2 < props.totalPages) {
-      pageNumbers.push(<span className="m-4"></span>);
+      pageNumbers.push(<span key={props.totalPages+1} className="m-4"></span>);
     }
 
     return pageNumbers;

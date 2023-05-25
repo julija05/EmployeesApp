@@ -4,9 +4,13 @@ import DangerButton from './DangerButton';
 import InputLabel from './InputLabel';
 import { fetchShifts } from '@/Api/fetchShifts';
 import Pagination from './Pagination';
+import { useForm } from '@inertiajs/react';
 
 
 const ShiftsTable = ({ shifts }) => {
+  const { data, setData, post, delete: destroy, processing, errors, reset } = useForm({
+      
+  });
   const inputRef = useRef()
 
   const [state, setState] = useState({
@@ -21,13 +25,14 @@ const ShiftsTable = ({ shifts }) => {
       setState({
         ...state,
         shifts: dt.data,
+        total_pages: dt.last_page,
+        currentPage: dt.current_page,
       })
     })
   }
 
   const setPage = (page)=> {
     fetchShifts('/api/shiftsByTotalPay', inputRef.current.value, page).then(dt => {
-      console.log(dt, 'pagedata')
       setState({
         ...state,
         currentPage:page,
@@ -53,7 +58,7 @@ const ShiftsTable = ({ shifts }) => {
       });
     } catch (error) {
       console.error("", error);
-      //   errors.set("deleteActivity",ERROR_DELETE_ACTIVITY);
+        errors.set("deleteShift",'Shift is not deleted');
     }
   };
   return (
@@ -65,6 +70,7 @@ const ShiftsTable = ({ shifts }) => {
         min="0"
         ref={inputRef}
       />
+      {errors.total_pay && <div className='text-red-500 m-3'>{errors.total_pay}</div>}
       <DangerButton className='ml-2' onClick={(e) => handleFilterShifts(e)}>Filter</DangerButton>
       <div className='overflow-y-scroll max-h-96 w-full'>
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -133,12 +139,14 @@ const ShiftsTable = ({ shifts }) => {
                   </a>
                 </td>
                 <td className="px-6 py-4">
+
                   <SecondaryButton
                     onClick={() => deleteShift(item.id)}
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
                     Delete
                   </SecondaryButton>
+    
                 </td>
               </tr>
             ))}

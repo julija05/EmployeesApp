@@ -15,6 +15,7 @@ export default function Shifts({shifts}) {
                             <NavLink className='text-base'  href={route('employees.index')}>Employees</NavLink>
                             <NavLink className='text-base'  href={route('shifts.index')}>Shifts</NavLink>
                             <NavLink className='text-base'  href={route('shifts.create')}> Create Shift</NavLink>
+                            <NavLink className='text-base'  href={route('welcome')}> Upload CSV</NavLink>
                 </div>
             </div>
         </nav>

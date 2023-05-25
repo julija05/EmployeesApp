@@ -13,22 +13,25 @@ export default function EmployeeSummary({ employee,averagePayPerHour,lastFivePay
                             <NavLink className='text-base'  href={route('employees.index')}>Employees</NavLink>
                             <NavLink className='text-base'  href={route('shifts.index')}>Shifts</NavLink>
                             <NavLink className='text-base'  href={route('shifts.create')}> Create Shift</NavLink>
+                            <NavLink className='text-base'  href={route('welcome')}> Upload CSV</NavLink>
                 </div>
             </div>
         </nav>
             </div>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">{employee.worker}</div>
-                    </div>
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">Average pay per hour:{averagePayPerHour}</div>
-                    </div>
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">Average total pay:{averageTotalPay}</div>
-                    </div>
-                    <div className="py-12">
+                    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">  
+                        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div className="p-6 text-gray-900 font-black">{employee.worker}</div>
+                        </div>
+                        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div className="p-6 text-gray-900 "><span className='mr-2 font-black'>Average Pay Per Hour:</span>{averagePayPerHour}<span className='ml-2'>£</span></div>
+                        </div>
+                        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div className="p-6 text-gray-900"><span className='mr-2 font-black'>Average Total Pay:</span>{averageTotalPay}<span className='ml-2'>£</span></div>
+                        </div>
+                  </div>  
+                 <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <PaymentsTable key={lastFivePayments.length.toString()} data={lastFivePayments}></PaymentsTable>
                 </div>

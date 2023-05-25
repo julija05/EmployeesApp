@@ -29,7 +29,6 @@ export default function CreateShift(props) {
     const submit = (e) => {
         e.preventDefault();
         if(props.shift && props.shift.id){
-             console.log(data,'data')
             put(route('shifts.update', [props.shift.id]), {
                 onError: (error) => {
                     setState({ ...state, error: true, errorMessage: error });
@@ -59,6 +58,7 @@ export default function CreateShift(props) {
                             <NavLink className='text-base'  href={route('employees.index')}>Employees</NavLink>
                             <NavLink className='text-base'  href={route('shifts.index')}>Shifts</NavLink>
                             <NavLink className='text-base'  href={route('shifts.create')}> Create Shift</NavLink>
+                            <NavLink className='text-base'  href={route('welcome')}> Upload CSV</NavLink>
                 </div>
             </div>
         </nav>
@@ -81,6 +81,7 @@ export default function CreateShift(props) {
                                })}
                                </select>
                             </div>
+                            {errors.employee_id && <div className='text-red-500 m-3'>{errors.employee_id}</div>}
                             <div className="p-12">
                                 <InputLabel value="Company" />
                                 <select name='company_id' value={data.company_id} onChange={(e)=>{setData('company_id', e.target.value)}}>
@@ -89,6 +90,7 @@ export default function CreateShift(props) {
                                })}
                                </select>
                             </div>
+                            {errors.company_id && <div className='text-red-500 m-3'>{errors.company_id}</div>}
                         </div>
                         <div className="sm:flex sm:flex-row sm:justify-start sm:items-start p">
                             {/* {errors.activityDateFrom && <div className="text-red-500 m-3">{errors.activityDateFrom}</div>} */}
@@ -96,10 +98,12 @@ export default function CreateShift(props) {
                                 <InputLabel value="Hours" />
                                 <input name='hours' value={data.hours} onChange={(e)=>{setData('hours', e.target.value)}} type='number' min='0'required></input>
                             </div>
+                            {errors.hours && <div className='text-red-500 m-3'>{errors.hours}</div>}
                             <div className="p-12">
                                 <InputLabel value="Rate Per Hour" />
                                 <input name='rate_per_hour' value={data.rate_per_hour} onChange={(e)=>{setData('rate_per_hour', e.target.value)}} type='number' min='0' required></input>
                             </div>
+                            {errors.rate_per_hour && <div className='text-red-500 m-3'>{errors.rate_per_hour}</div>}
                         </div>
                         <div className="sm:flex sm:flex-row sm:justify-start sm:items-start p">
                             {/* {errors.activityDateFrom && <div className="text-red-500 m-3">{errors.activityDateFrom}</div>} */}
@@ -110,6 +114,7 @@ export default function CreateShift(props) {
                                   <option key={1} value={'Pending'}>Pending</option>
                                </select>
                             </div>
+                            {errors.status && <div className='text-red-500 m-3'>{errors.status}</div>}
                             <div className="p-12">
                                 <InputLabel value="Shift Type" />
                                 <select name='shift_type' value={data.shift_type} onChange={(e)=>{setData('shift_type', e.target.value)}}>
@@ -118,14 +123,14 @@ export default function CreateShift(props) {
                                   <option key={2} value={'Holiday'}>Holiday</option>
                                </select>
                             </div>
+                            {errors.shift_type && <div className='text-red-500 m-3'>{errors.shift_type}</div>}
                             <div className="p-12">
                                 <InputLabel value="Paid At" />
                                 <input name='paid_at' id='paid_at' value={data.paid_at} type='date' onChange={(e) => setData('paid_at', e.target.value)}></input >
                             </div>
                         </div>
-                        {/* {errors.activityTimeSpend && <div className="text-red-500 m-3">{errors.activityTimeSpend}</div>} */}
+                        {errors.paid_at && <div className='text-red-500 m-3'>{errors.paid_at}</div>}
                         <div className="flex flex-col justify-end items-start p-8 mt-28">   
-                            {/* {errors.activityDescription && <div className="text-red-500 m-3">{errors.activityDescription}</div>} */}
                             <div>
                                 <PrimaryButton className="mt-12">{props.title}</PrimaryButton>
                                 <SecondaryButton className="mt-12 ml-2">
@@ -136,7 +141,7 @@ export default function CreateShift(props) {
                         </div>
                     </form>
                 </div>
-                <div className='m-5'><img src={img} alt="" /></div>
+                <div className='m-5'><img src={img} alt="add/edit new shift" /></div>
             </div>
         </div>
     );

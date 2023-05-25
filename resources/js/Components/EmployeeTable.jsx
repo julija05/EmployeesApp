@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 
 const EmployeeTable = ({employees}) => {
     const employee = employees;
-    console.log(employee,'emplo')
     const [state, setState] = useState({
         employees: employee,
         success: false,

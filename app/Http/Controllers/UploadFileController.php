@@ -31,7 +31,7 @@ class UploadFileController extends Controller
                 $rowData = array_combine($headers, $row);
                 $missingColumns = array_diff($requiredColumns, array_keys($rowData));
                 if($missingColumns){
-                    return ;
+                    return redirect()->back()->withErrors(['message'=> 'This csv file has missing columns']);
                 }
                 $taxable = $rowData['Taxable'] == 'Yes' ? true : false;
                 $ratePerHour = floatval(str_replace('£', '', $rowData['Rate per Hour']));

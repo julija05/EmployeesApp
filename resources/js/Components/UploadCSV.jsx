@@ -25,7 +25,7 @@ const FileUpload = () => {
     // Make a POST request to your Laravel endpoint to handle the file upload
     post(route('upload'), {
       onError: (error) => {
-          error.file='Your file in not uploaded.Upload CSV file'
+          error.file= error.message ?? 'Your file in not uploaded.Upload CSV file'
       },
       onSuccess: () => {
           setData((prevData)=>({
