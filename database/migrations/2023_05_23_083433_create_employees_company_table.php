@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('employee_id')->references('id')->on('employees');
             $table->unique(['company_id', 'employee_id']);
+            $table->index('employee_id');
         });
     }
 

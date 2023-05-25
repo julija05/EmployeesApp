@@ -14,9 +14,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return $this->createView('Employee/Employees', [
-            'employees'=> Employee::all(),
-        ]);
+        return $this->createView('Employee/Employees');
     }
 
     /**

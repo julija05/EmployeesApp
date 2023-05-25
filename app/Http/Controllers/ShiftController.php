@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreShiftRequest;
 use App\Http\Requests\UpdateShiftRequest;
+use Illuminate\Support\Facades\Redirect;
 use App\Models\Shift;
+use App\Models\Employee;
+use App\Models\Company;
+use App\Events\CachedDataChanged;
 
 class ShiftController extends Controller
 {
@@ -13,16 +17,7 @@ class ShiftController extends Controller
      */
     public function index()
     {
-        $shifts = Shift::with('employee', 'company')->get();
-
-        foreach ($shifts as $shift) {
-            $totalPay = $shift->rate_per_hour * $shift->hours;
-            $shift->total_pay = $totalPay;
-        }
-
-        return $this->createView('Shifts/AllShifts',[
-            'shifts'=>$shifts
-        ]);
+        return $this->createView('Shifts/AllShifts');
     }
 
     /**
@@ -30,7 +25,7 @@ class ShiftController extends Controller
      */
     public function create()
     {
-        //
+        return $this->createView('Shifts/CreateShift');
     }
 
     /**
@@ -38,7 +33,10 @@ class ShiftController extends Controller
      */
     public function store(StoreShiftRequest $request)
     {
-        //
+        Shift::create($request->validated());
+        event(new CachedDataChanged());
+
+        return Redirect::route('shifts.index');
     }
 
     /**
@@ -54,7 +52,9 @@ class ShiftController extends Controller
      */
     public function edit(Shift $shift)
     {
-        //
+        return $this->createView('Shifts/EditShift',[
+            'shift',$shift
+        ]);
     }
 
     /**
@@ -70,6 +70,8 @@ class ShiftController extends Controller
      */
     public function destroy(Shift $shift)
     {
-        //
+        $shift->delete();
+        event(new CachedDataChanged());
+        return Redirect::route('shifts.index');
     }
 }

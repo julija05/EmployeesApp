@@ -6,6 +6,7 @@ use App\Http\Controllers\ShiftController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UploadFileController;
+use App\Http\Controllers\Api\ShiftsApiController;
 use Inertia\Inertia;
 
 /*
@@ -28,6 +29,7 @@ Route::get('/', function () {
     ]);
 });
 Route::post('/api/upload',[UploadFileController::class,'upload'])->name('upload');
+Route::get('/api/shiftsByTotalPay',[ShiftsApiController::class,'shiftsByTotalPay'])->name('shiftsByTotalPay');
 Route::resource('employees', EmployeeController::class);
 Route::resource('shifts', ShiftController::class);
 
