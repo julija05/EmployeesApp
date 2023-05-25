@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Shift;
 use App\Models\Employee;
 use App\Models\Company;
+use App\Events\CachedDataChanged;
 
 class UploadFileController extends Controller
 {
@@ -56,6 +57,7 @@ class UploadFileController extends Controller
                     'employee_id' => $employeeId,
                 ]);
             }
+            event(new CachedDataChanged());
 
             return response()->json(['message' => 'File uploaded successfully']);
         }

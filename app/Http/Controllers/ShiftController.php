@@ -34,6 +34,7 @@ class ShiftController extends Controller
     public function store(StoreShiftRequest $request)
     {
         Shift::create($request->validated());
+        
         event(new CachedDataChanged());
 
         return Redirect::route('shifts.index');
@@ -52,8 +53,8 @@ class ShiftController extends Controller
      */
     public function edit(Shift $shift)
     {
-        return $this->createView('Shifts/EditShift',[
-            'shift',$shift
+        return $this->createView('Shifts/CreateShift',[
+            'shift' => $shift
         ]);
     }
 
@@ -62,7 +63,11 @@ class ShiftController extends Controller
      */
     public function update(UpdateShiftRequest $request, Shift $shift)
     {
-        //
+        $shift->update($request->validated());
+
+        event(new CachedDataChanged());
+
+        return Redirect::route('shifts.index');
     }
 
     /**
@@ -71,7 +76,9 @@ class ShiftController extends Controller
     public function destroy(Shift $shift)
     {
         $shift->delete();
+
         event(new CachedDataChanged());
+
         return Redirect::route('shifts.index');
     }
 }

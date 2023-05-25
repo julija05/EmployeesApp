@@ -3,23 +3,22 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
 import SecondaryButton from '@/Components/SecondaryButton';
 import { useState } from 'react';
-import Dropdown from '@/Components/Dropdown';
-import TextInput from '@/Components/TextInput';
 import NavLink from '@/Components/NavLink';
+import moment from 'moment';
+import img from '../../../assets/undraw_add_files_re_v09g.svg'
 
 export default function CreateShift(props) {
-
-    console.log(props,'props')
     const { data, setData, post, put, processing, errors, reset } = useForm({
-      date:'',
-      employee_id:'',
-      company_id:'',
-      hours:'',
-      rate_per_hour:'',
-      taxable:'',
-      status:'',
-      shift_type:'',
-      paid_at:'',
+      id: props.shift ? props.shift.id : null,
+      date: props.shift ? moment(props.shift.date).format('yyyy-MM-DD') : '',
+      employee_id:(props.shift?props.shift.employee_id:(props.employees && props.employees.length>0?props.employees[0].id:'')),
+      company_id:(props.shift ? props.shift.company_id : (props.companies && props.companies.length>0?props.companies[0].id:'')),
+      hours: props.shift ? props.shift.hours : '',
+      rate_per_hour:props.shift ? props.shift.rate_per_hour : '',
+      taxable:props.shift ? props.shift.taxable : 0,
+      status:props.shift ? props.shift.status :'Complete',
+      shift_type:props.shift ? props.shift.shift_type :'Day',
+      paid_at:props.shift ? moment(props.shift.paid_at).format('yyyy-MM-DD') : '',
     });
 
     const [state, setState] = useState({
@@ -132,6 +131,7 @@ export default function CreateShift(props) {
                         </div>
                     </form>
                 </div>
+                <div className='m-5'><img src={img} alt="" /></div>
             </div>
         </div>
     );
