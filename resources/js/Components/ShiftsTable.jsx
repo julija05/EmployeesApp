@@ -5,6 +5,7 @@ import InputLabel from './InputLabel';
 import { fetchShifts } from '@/Api/fetchShifts';
 import Pagination from './Pagination';
 import { useForm } from '@inertiajs/react';
+import ToastSuccess from './ToastSucces';
 
 
 const ShiftsTable = ({ shifts }) => {
@@ -18,6 +19,7 @@ const ShiftsTable = ({ shifts }) => {
     shifts: shifts.data,
     total_pages: shifts.last_page,
     currentPage: shifts.current_page,
+    success:false,
   });
 
   const handleFilterShifts = (e) => {
@@ -72,6 +74,12 @@ const ShiftsTable = ({ shifts }) => {
       />
       {errors.total_pay && <div className='text-red-500 m-3'>{errors.total_pay}</div>}
       <DangerButton className='ml-2' onClick={(e) => handleFilterShifts(e)}>Filter</DangerButton>
+      
+      {state.success && <ToastSuccess  onClose={()=>setState({
+        ...state,
+        success:false,
+      })} message='Succesfully Deleted!'/> }
+
       <div className='overflow-y-scroll max-h-96 w-full'>
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
